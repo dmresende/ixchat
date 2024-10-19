@@ -1,3 +1,4 @@
+```
 my-express-app/
 │
 ├── node_modules/          # Módulos do Node.js
@@ -14,3 +15,4 @@ my-express-app/
 ├── .gitignore             # Arquivo para ignorar arquivos e pastas no Git
 ├── package.json           # Dependências e scripts do projeto
 └── README.md              # Documentação do projeto
+```

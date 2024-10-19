@@ -10,16 +10,15 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-async function main() {
+const main = async () => {
   try {
     await connectionDB();
-    console.log('Connected to MongoDB');
+    console.log('Connected to MongoDB 🎉');
 
     app.use('/users', User);
-    // app.use('/auth', Auth); 
 
     app.listen(PORT, () => {
-      console.log(`Server running at http://localhost:${PORT}/`);
+      console.log(`Server running at ${PORT} 🚀`);
     });
   } catch (err) {
     console.error('MongoDB connection error:', err);

@@ -1,22 +1,16 @@
 import express from 'express';
-import { getAllUsers, loggin, getUser, createUser, updateUser, deleteUser } from '../controllers/userController.js';
+import { getAllUsers, login, getUser, createUser, updateUser, deleteUser } from '../controllers/userController.js';
+import authMiddleware from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// Middleware para garantir que o usuário está autenticado
-const ensureAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.status(401).json({ message: 'Você precisa estar autenticado para acessar esta rota.' });
-};
-
-
-router.post('/login', loggin);
+//difinição de rotas publicas e privadas
+router.post('/login', login);
 router.post('', createUser);
-router.get('/', getAllUsers);
-router.get('/:id', ensureAuthenticated, getUser);
-router.put('/:id', ensureAuthenticated, updateUser);
-router.delete('/:id', ensureAuthenticated, deleteUser);
+
+router.get('/', authMiddleware, getAllUsers);
+router.get('/:id', authMiddleware, getUser);
+router.put('/:id', authMiddleware, updateUser);
+router.delete('/:id', authMiddleware, deleteUser);
 
 export default router;

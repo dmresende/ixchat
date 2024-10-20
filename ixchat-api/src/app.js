@@ -24,17 +24,16 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 const main = async () => {
   try {
     await connectionDB();
     console.log('Connected to MongoDB 🎉');
 
     app.use('/users', userRoutes);
-
+    app.use('/message', userRoutes);
 
     app.listen(PORT, () => {
-      console.log(`Server running at ${PORT} 🚀`);
+      console.log(`Server running at http://localhost:${PORT} 🚀`);
     });
   } catch (err) {
     console.error('MongoDB connection error:', err);

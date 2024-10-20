@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useAuth } from "@/hooks/useAlth";
 import toast from "react-hot-toast";
 import { api } from '@/utils/api'
+import { useRouter } from 'next/navigation';
 interface UserTypes {
   id: number
   name: string
@@ -16,10 +17,12 @@ const Chat = () => {
   const { logout, data } = useAuth();
   const [users, setUsers] = useState<UserTypes[]>([]);
   const [visibleUsersCount, setVisibleUsersCount] = useState(9); // Número inicial de usuários visíveis
+  const router = useRouter();
 
 
   const handleLogout = () => {
     logout();
+    router.push("/login");
     toast.success("Logout realizado com sucesso!");
   };
 
@@ -56,21 +59,24 @@ const Chat = () => {
               <span className="block font-medium text-gray-800">{data?.user?.name}</span>
               <span className="text-sm text-gray-500">{data.user?.username}</span>
             </div>
-
-            <img
-              src={data?.user?.photo}
-              alt="Foto de perfil"
-              className="w-10 h-10 rounded-full"
-              onClick={toggleMenu}
-            />
-            {menuVisible && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-10">
-                <Link href="/" className="block px-4 py-2 text-black hover:bg-gray-100 transition">
-                  Meus Dados
-                </Link>
-                <a onClick={toggleMenu} className="block px-4 py-2 text-red-500 hover:bg-gray-100 transition">sair</a>
-              </div>
-            )}
+            <div className="relative">
+              <img
+                src={data?.user?.photo}
+                onClick={toggleMenu}
+                alt="Foto de perfil"
+                className="w-10 h-10 rounded-full cursor-pointer"
+              />
+              {menuVisible && (
+                <div className="absolute left-full mt-2 w-48 bg-white rounded-lg shadow-lg z-10 transition-opacity duration-300 opacity-100">
+                  <Link href="/" className="block px-4 py-2 text-black hover:bg-gray-100 transition">
+                    x
+                  </Link>
+                  <a onClick={handleLogout} className="block px-4 py-2 text-red-500 hover:bg-gray-100 transition">
+                    sair
+                  </a>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 

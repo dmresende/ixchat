@@ -6,20 +6,18 @@ export const loggin = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const user = await User.findOne({ username }); // Procura o usuário
+    const user = await User.findOne({ username });
 
     if (!user) {
       return res.status(401).json({ message: 'Usuário ou senha incorretos.' });
     }
 
-    // Verifica se a senha inserida corresponde à senha hashada
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       return res.status(401).json({ message: 'Usuário ou senha incorretos.' });
     }
 
-    // Se tudo estiver correto, loga o usuário
     req.login(user, (err) => {
       if (err) return res.status(500).json({ message: 'Erro ao autenticar usuário.' });
       return res.json({ message: 'Login realizado com sucesso!', user });
@@ -38,14 +36,27 @@ export const getAllUsers = async (_req, res) => {
   }
 }
 
+//todo  -no update da senha ele nao esta guardando a hash da senha 
 export const updateUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    user.name = req.body.name;
-    user.username = req.body.username;
-    user.password = req.body.password;
+
+    if (!user) {
+      return res.status(404).json({ message: 'Usuário não encontrado.' });
+    }
+    const { name, username, password } = req.body;
+
+    user.name = name || req.body.name;
+    user.username = username || req.body.username;
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
+    }
+
     await user.save();
-    res.json(user);
+
+    return res.json({ message: 'Registro atualizado com sucesso', user });
   } catch (error) {
     res.status(500).json({ message: 'Erro ao atualizar usuário.', error: error.message });
   }

@@ -12,7 +12,6 @@ passport.use(new LocalStrategy(
         return done(null, false, { message: 'Usuário não encontrado.' });
       }
 
-      // Verifica se a senha está correta
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         return done(null, false, { message: 'Senha incorreta.' });
@@ -25,7 +24,7 @@ passport.use(new LocalStrategy(
   }
 ));
 
-// Serializa e desserializa o usuário para a sessão
+
 passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser(async (id, done) => {
   try {

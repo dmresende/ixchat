@@ -25,6 +25,9 @@ export const useAuth = create<AuthState>()(
         try {
           const res = await api.post("/users/login/", { username, password });
 
+          console.log("Login response:", res);
+          console.log("Login es.data.use:", res.data.use);
+
           if (res.status === 200 && res.data.user) {
             set({
               data: { user: res.data.user },
@@ -32,8 +35,10 @@ export const useAuth = create<AuthState>()(
 
             toast.success(res.data.message);
 
+
             router.push("/chat");
           } else {
+
             console.warn("Login response did not return a valid user.");
           }
         } catch (error: any) {

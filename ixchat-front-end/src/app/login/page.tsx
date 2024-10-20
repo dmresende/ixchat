@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, FormEvent } from "react";
 
-export default function Login() {
+const Login = () => {
   const router = useRouter();
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -134,3 +134,5 @@ export default function Login() {
     </div >
   );
 }
+
+export default Login;

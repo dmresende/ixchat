@@ -15,11 +15,8 @@ export default function Home() {
   const loged = data.user ? true : false;
 
   if (cliente) {
-    if (loged) {
-      redirect("/chat");
-    } else {
-      redirect("/login");
-    }
+    loged
+      ? redirect("/chat")
+      : redirect("/login");
   }
-
 }

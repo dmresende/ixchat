@@ -5,8 +5,10 @@ import { toast } from 'react-hot-toast';
 
 interface UserTypes {
   id: number;
+  name: string;
   username: string;
   email: string;
+  photo: string;
 }
 
 interface AuthState {
@@ -14,6 +16,7 @@ interface AuthState {
     user: UserTypes | null;
   };
   login: (username: string, password: string, router: any) => Promise<void>;
+  logout: () => void;
 }
 
 export const useAuth = create<AuthState>()(
@@ -35,10 +38,8 @@ export const useAuth = create<AuthState>()(
 
             toast.success(res.data.message);
 
-
             router.push("/chat");
           } else {
-
             console.warn("Login response did not return a valid user.");
           }
         } catch (error: any) {
@@ -47,7 +48,11 @@ export const useAuth = create<AuthState>()(
         }
       },
       //todo chamar essa func ao sair 
-      logout: () => set({ data: { user: null } }),
+      logout: () => {
+        set({ data: { user: null } })
+        console.log("logged out");
+      },
+
     }),
     {
       name: '@IXChat',

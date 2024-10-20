@@ -12,14 +12,18 @@ const SignUp = () => {
   const [name, setName] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const generateRandomNumber = () => {
+    return Math.floor(Math.random() * 10000);
+  }
   // const { login } = useAuth();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
+      const photo = 'https://i.pravatar.cc/300?u=a' + generateRandomNumber();
       // Envie os dados para a API
-      const res = await api.post("/users/", { name, username, password });
+      const res = await api.post("/users/", { name, username, password, photo });
 
       if (res.status === 200 || res.status === 201 || res.status === 204) {
         toast.success("Cadastro realizado com sucesso!");

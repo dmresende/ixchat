@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# IXChat Front-end - Interface do Usuário para o Projeto de Chat em Tempo Real
 
-## Getting Started
+Este é o front-end da aplicação IXChat, um sistema de chat em tempo real desenvolvido com Next.js.
 
-First, run the development server:
+## Visão Geral do Projeto
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+O IXChat Front-end é uma aplicação web e responsiva que oferece uma interface intuitiva para os usuários interagirem com o sistema de chat. Ele se conecta ao backend IXChat API para fornecer funcionalidades de autenticação, listagem de usuários e troca de mensagens em tempo real.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Principais Tecnologias e Dependências
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Next.js**: Framework React para renderização do lado do servidor e geração de sites estáticos.
+- **React**: Biblioteca JavaScript para construção de interfaces de usuário.
+- **TypeScript**: Superset tipado de JavaScript, melhorando a qualidade e manutenibilidade do código.
+- **Axios**: Cliente HTTP para fazer requisições à API.
+- **Zustand**: Biblioteca de gerenciamento de estado, usada para gerenciar o estado global da aplicação.
+- **Tailwind CSS**: Framework CSS utilitário para design rápido e responsivo.
+- **React Hot Toast**: Biblioteca para notificações de toast elegantes e customizáveis.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Funcionalidades Principais
 
-## Learn More
+- Autenticação de usuários (login e registro)
+- Listagem de usuários disponíveis para chat
+- Interface de chat em tempo real
+- Gerenciamento de perfil de usuário
 
-To learn more about Next.js, take a look at the following resources:
+## Iniciando o Projeto
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clone o repositório
+2. Instale as dependências: `npm install`
+3. Configure as variáveis de ambiente no arquivo `.env.local`
+4. Inicie o servidor de desenvolvimento: `npm run dev`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+O aplicativo estará disponível em `http://localhost:3000`.
 
-## Deploy on Vercel
+## Estrutura do Projeto
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `src/`: Contém o código-fonte principal
+  - `app/`: Componentes e páginas da aplicação
+  - `components/`: Componentes React reutilizáveis
+  - `hooks/`: Hooks personalizados, incluindo o hook de autenticação
+  - `utils/`: Utilitários e configurações (ex: configuração do Axios)
+- `public/`: Arquivos estáticos
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Integração com o Backend
+
+Este front-end é projetado para trabalhar em conjunto com o IXChat API. Certifique-se de que o backend está configurado e rodando corretamente para o pleno funcionamento do sistema.
+
+## Contribuindo
+
+Contribuições são bem-vindas! Por favor, leia as diretrizes de contribuição antes de submeter pull requests.

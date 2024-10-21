@@ -1,64 +1,48 @@
-```
-IXChat
-│
-├── .env
-├── .gitignore
-├── package-lock.json
-│
-└── src/
-    ├── app.js
-    │
-    ├── controllers/
-    │   └── userController.js
-    │
-    ├── db/
-    │   └── connectionDB.js
-    │
-    ├── models/
-    │   └── user.js
-    │
-    └── routes/
-        └── user.js
-```
+# IXChat API - Backend do Projeto de Chat em Tempo Real
 
-Documentação do Projeto:
+Este é o backend da aplicação IXChat, um sistema de chat em tempo real desenvolvido com Node.js.
 
-1. Visão Geral:
-   Este projeto é uma aplicação Node.js/Express que implementa um sistema de gerenciamento de usuários com a finalidade de, com autenticação, usarem um IXChat.
+## Visão Geral do Projeto
 
-2. Componentes Principais:
-   - app.js: Ponto de entrada da aplicação. Configura o servidor Express, middleware e rotas.
-   - models/user.js: Define o esquema do usuário para o MongoDB.
-   - routes/user.js: Define as rotas para operações de usuário (CRUD e login).
-   - controllers/userController.js: Contém a lógica de negócios para operações de usuário.
+O IXChat API é construído usando Express.js e oferece funcionalidades de autenticação, gerenciamento de usuários e troca de mensagens em tempo real. Ele utiliza MongoDB como banco de dados e implementa várias tecnologias para criar uma experiência de chat.
 
-3. Funcionalidades:
-   - Registro de usuário
-   - Login de usuário
-   - Obter todos os usuários
-   - Obter um usuário específico
-   - Atualizar usuário
-   - Deletar usuário
+## Principais Dependências
 
-4. Autenticação:
-   - Utiliza Passport.js para autenticação
-   - Implementa sessões para manter o estado de login do usuário
+- **Express.js**: Framework web para Node.js, usado para criar a API RESTful.
+- **Passport.js**: Middleware de autenticação, utilizado para implementar estratégias de login.
+- **Socket.IO**: Biblioteca para comunicação em tempo real, permitindo a troca instantânea de mensagens.
+- **Mongoose**: ODM (Object Data Modeling) para MongoDB, facilitando a interação com o banco de dados.
+- **bcrypt**: Utilizado para hash de senhas, aumentando a segurança do armazenamento de credenciais.
+- **JSON Web Token (JWT)**: Implementado para autenticação stateless e segura.
+- **Cors**: Middleware para habilitar o CORS (Cross-Origin Resource Sharing).
+- **dotenv**: Para carregar variáveis de ambiente de um arquivo .env.
 
-5. Banco de Dados:
-   - Utiliza MongoDB como banco de dados
-   - A conexão é gerenciada através do arquivo connectionDB.js
+## Funcionalidades Principais
 
-6. Segurança:
-   - Senhas são armazenadas de forma segura (presumivelmente com hash)
-   - Rotas protegidas requerem autenticação
+- Autenticação de usuários (registro, login, logout)
+- Gerenciamento de perfis de usuário
+- Envio e recebimento de mensagens em tempo real
+- Listagem de usuários e conversas
 
-7. Configuração:
-   - Variáveis de ambiente são armazenadas no arquivo .env
-   - Inclui configurações para porta do servidor, URI do MongoDB e chaves secretas
+## Iniciando o Projeto
 
-Para executar o projeto:
-1. Instale as dependências: npm install
-2. Configure as variáveis de ambiente no arquivo .env
-3. Inicie o servidor: npm start
+1. Clone o repositório
+2. Instale as dependências: `npm install`
+3. Configure o arquivo `.env` com suas variáveis de ambiente
+4. Inicie o servidor: `npm run dev`
 
-O servidor estará rodando na porta especificada (padrão: 3000).
+Para mais detalhes sobre como iniciar o projeto, consulte as instruções no README principal do repositório.
+
+## Estrutura do Projeto
+
+- `src/`: Contém o código-fonte principal
+  - `controllers/`: Lógica de negócios
+  - `models/`: Esquemas do Mongoose
+  - `routes/`: Definições de rotas da API
+  - `middleware/`: Middlewares personalizados
+  - `config/`: Configurações (ex: Passport, banco de dados)
+- `app.js`: Ponto de entrada da aplicação
+
+## Contribuindo
+
+Contribuições são bem-vindas! Por favor, leia as diretrizes de contribuição antes de submeter pull requests.

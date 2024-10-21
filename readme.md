@@ -2,6 +2,7 @@
 
 Este projeto consiste em uma aplicação de chat em tempo real com um backend em Node.js (ixchat-api) e um frontend em Next.js (ixchat-front-end).
 
+
 ## Iniciando o Backend (ixchat-api)
 
 1. Navegue até a pasta do backend:   ```
@@ -13,6 +14,7 @@ Este projeto consiste em uma aplicação de chat em tempo real com um backend em
 3. Configure as variáveis de ambiente:
    - Copie o arquivo `.env.example` para `.env`
    - Preencha as variáveis no arquivo `.env` com suas configurações
+   -  Ao iniciar a aplicação, um banco MongoDB será automaticamente criado conforme as variáveis do arquivo .env
 
 4. Inicie o servidor de desenvolvimento:   ```
    npm run dev   ```

@@ -10,6 +10,7 @@ import { sessionMiddleware } from './middleware/sessionMiddleware.js';
 import sharedsession from 'express-socket.io-session';
 import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';
+import http from 'http';
 
 const app = express();
 app.use(cors());
@@ -22,7 +23,13 @@ app.get('/', (req, res) => {
 });
 
 //documentação - const io = new Server(server);
-const io = new Server();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});
 
 //compartilha session com o socket
 io.use(sharedsession(sessionMiddleware, {
@@ -30,12 +37,15 @@ io.use(sharedsession(sessionMiddleware, {
 }));
 
 io.on('connection', (socket) => {
-  const userId = socket.handshake.session.passport.user
-  socket.join(userId);
+  console.log('Um usuário conectou');
 
-  socket.on('sendMessage', async () => {
-    const { receiverId, content } = messageData;
-    const senderId = userId;
+  socket.on('join', (userId) => {
+    socket.join(userId);
+    console.log(`Usuário ${userId} entrou na sala`);
+  });
+
+  socket.on('sendMessage', async (messageData) => {
+    const { senderId, receiverId, content } = messageData;
 
     try {
       const newMessage = new Message({
@@ -45,12 +55,16 @@ io.on('connection', (socket) => {
       });
       await newMessage.save();
 
-      io.to(receiverId.toString()).emit('newMessage', newMessage);
-      socket.emit('newMessage', newMessage);
+      io.to(receiverId).emit('newMessage', newMessage);
+      io.to(senderId).emit('newMessage', newMessage);
     } catch (error) {
       console.error('Erro ao enviar mensagem:', error);
     }
-  })
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Um usuário desconectou');
+  });
 });
 
 dotenv.config();
@@ -63,7 +77,6 @@ app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 const main = async () => {
   try {
     await connectionDB();
@@ -72,7 +85,7 @@ const main = async () => {
     app.use('/users', userRoutes);
     app.use('/message', messageRoutes);
 
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`Server running at http://localhost:${PORT} 🚀`);
       console.log(`Swagger documentation available at http://localhost:${PORT}/api-docs`);
     });

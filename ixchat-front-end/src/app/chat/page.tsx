@@ -20,13 +20,18 @@ interface Message {
   isSent: boolean;
 }
 
+interface UserMessages {
+  [userId: number]: Message[];
+}
+
 const Chat = () => {
   const [menuVisible, setMenuVisible] = useState(false);
   const { logout, data } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
   const router = useRouter();
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [userMessages, setUserMessages] = useState<UserMessages>({});
   const [newMessage, setNewMessage] = useState('');
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const handleLogout = () => {
     logout();
@@ -48,15 +53,28 @@ const Chat = () => {
   }, []);
 
   const handleSendMessage = () => {
-    if (newMessage.trim() !== '') {
+    if (newMessage.trim() !== '' && selectedUser) {
       const newMessageObj: Message = {
-        id: messages.length + 1,
+        id: (userMessages[selectedUser.id]?.length || 0) + 1,
         content: newMessage,
         timestamp: new Date().toLocaleTimeString(),
         isSent: true
       };
-      setMessages([...messages, newMessageObj]);
+      setUserMessages(prevMessages => ({
+        ...prevMessages,
+        [selectedUser.id]: [...(prevMessages[selectedUser.id] || []), newMessageObj]
+      }));
       setNewMessage('');
+    }
+  };
+
+  const handleSelectUser = (user: User) => {
+    setSelectedUser(user);
+    if (!userMessages[user.id]) {
+      setUserMessages(prevMessages => ({
+        ...prevMessages,
+        [user.id]: []
+      }));
     }
   };
 
@@ -97,7 +115,7 @@ const Chat = () => {
           {/* Lista de usuários */}
           <div className="bg-gray-100 p-4 border-r overflow-y-auto">
             {users.map((user) => (
-              <div key={user.id} className="mb-4 p-2 bg-blue-50 rounded-lg hover:bg-blue-100">
+              <div key={user.id} className="mb-4 p-2 bg-blue-50 rounded-lg hover:bg-blue-100 cursor-pointer" onClick={() => handleSelectUser(user)}>
                 <div className="flex items-center">
                   <img src={user.photo} alt={user.name} className="w-10 h-10 rounded-full mr-3" />
                   <div>
@@ -111,9 +129,20 @@ const Chat = () => {
 
           {/* Área de chat */}
           <div className="flex flex-col bg-gray-50">
+            {/* Usuário selecionado */}
+            {selectedUser && (
+              <div className="p-4 bg-white border-b flex items-center">
+                <img src={selectedUser.photo} alt={selectedUser.name} className="w-10 h-10 rounded-full mr-3" />
+                <div>
+                  <h2 className="font-semibold text-gray-800">{selectedUser.name}</h2>
+                  <span className="text-sm text-gray-500">{selectedUser.isOnline ? "Online" : "Offline"}</span>
+                </div>
+              </div>
+            )}
+
             {/* Mensagens */}
             <div className="flex-1 p-4 space-y-4 overflow-y-auto">
-              {messages.map((message, index) => (
+              {selectedUser && userMessages[selectedUser.id]?.map((message, index) => (
                 <div key={index} className={`flex ${message.isSent ? 'justify-end' : 'justify-start'}`}>
                   <div className={`p-3 rounded-lg max-w-[60%] ${message.isSent ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}>
                     <p>{message.content}</p>
@@ -132,7 +161,7 @@ const Chat = () => {
                 placeholder="Digite sua mensagem"
                 className="flex-1 p-3 border rounded-lg"
               />
-              <button 
+              <button
                 onClick={handleSendMessage}
                 className="ml-3 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
               >

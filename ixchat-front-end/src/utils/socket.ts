@@ -1,21 +1,5 @@
-// src/app/chat/page.tsx
-"use client";
+import { io } from 'socket.io-client';
 
-import { useEffect } from "react";
-import { io } from "socket.io-client";
+const socket = io('http://localhost:3333');
 
-const ChatPage = () => {
-  useEffect(() => {
-    const socket = io(); // Conecta ao servidor Socket.IO
-
-    socket.on("connect", () => {
-      console.log("Connected to server");
-    });
-
-    return () => {
-      socket.disconnect(); // Desconecta ao desmontar o componente
-    };
-  }, []);
-};
-
-export default ChatPage;
+export default socket;

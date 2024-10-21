@@ -5,8 +5,10 @@ const authMiddleware = (req, res, next) => {
   console.log('req.user:', req.user);
 
   if (req.isAuthenticated()) {
+    console.log('Autenticado');
     return next();
   }
+  console.log('Nao autenticado');
   return res.status(401).json({ message: 'Não autorizado. Faça login primeiro.' });
 };
 

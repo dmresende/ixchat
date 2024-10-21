@@ -41,6 +41,7 @@ export const getMessagesBetweenUsers = async (req, res) => {
       ]
     }).sort({ timestamp: 1 });
 
+
     res.json(messages);
   } catch (error) {
     console.error('Erro ao buscar mensagens:', error);

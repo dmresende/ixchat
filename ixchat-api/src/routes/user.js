@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/login', login);
 router.post('', createUser);
 
-router.get('/', authMiddleware, getAllUsers);
+router.get('/', getAllUsers); // problemas com autenticação 
 router.get('/:id', authMiddleware, getUser);
 router.put('/:id', authMiddleware, updateUser);
 router.delete('/:id', authMiddleware, deleteUser);

@@ -38,3 +38,5 @@ O aplicativo frontend estará disponível em `http://localhost:3000`.
 
 - Certifique-se de que o MongoDB está rodando e acessível antes de iniciar o backend.
 - Para desenvolvimento, o frontend está configurado para se comunicar com o backend na porta 3333. Certifique-se de que esta porta está correta e disponível.
+
+obs.: o projeto ainda não está finalizado, segue em construção

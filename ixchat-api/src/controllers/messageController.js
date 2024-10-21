@@ -1,15 +1,19 @@
 import Message from '../models/message.js';
+import mongoose from 'mongoose';
 
 export const sendMessage = async (req, res) => {
-  console.log('req.body', req.body);
-
   const { receiverId, content } = req.body;
   const senderId = req.user._id;
 
   try {
+    // Validar se receiverId é um ObjectId válido
+    if (!mongoose.Types.ObjectId.isValid(receiverId)) {
+      return res.status(400).json({ message: 'ID do receptor inválido.' });
+    }
+
     const newMessage = new Message({
       senderId,
-      receiverId,
+      receiverId: new mongoose.Types.ObjectId(receiverId),
       content
     });
 
@@ -22,19 +26,24 @@ export const sendMessage = async (req, res) => {
 };
 
 export const getMessagesBetweenUsers = async (req, res) => {
-  const { userId } = req.params; // ID do usuário com quem o chat está sendo buscado
-  const senderId = req.user._id; // Assumindo que o ID do usuário autenticado está em req.user
+  const { userId } = req.params;
+  const senderId = req.user._id;
 
   try {
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'ID do usuário inválido.' });
+    }
+
     const messages = await Message.find({
       $or: [
         { senderId, receiverId: userId },
         { senderId: userId, receiverId: senderId }
       ]
-    }).sort({ timestamp: 1 }); // Ordenar as mensagens pelo timestamp
+    }).sort({ timestamp: 1 });
 
     res.json(messages);
   } catch (error) {
+    console.error('Erro ao buscar mensagens:', error);
     res.status(500).json({ message: 'Erro ao buscar mensagens.', error: error.message });
   }
 };
@@ -49,7 +58,7 @@ export const markMessageAsRead = async (req, res) => {
       return res.status(404).json({ message: 'Mensagem não encontrada.' });
     }
 
-    message.read = true; // Marca a mensagem como lida
+    message.read = true;
     await message.save();
 
     res.json({ message: 'Mensagem marcada como lida.', message });

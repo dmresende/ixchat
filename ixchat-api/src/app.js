@@ -3,16 +3,26 @@ import passport from './config/passport.js';
 import dotenv from 'dotenv';
 import connectionDB from './config/connectionDB.js';
 import userRoutes from './routes/user.js';
+import messageRoutes from './routes/message.js';
 import cors from 'cors';
 import { Server } from 'socket.io';
 import { sessionMiddleware } from './middleware/sessionMiddleware.js';
 import sharedsession from 'express-socket.io-session';
+import swaggerUi from 'swagger-ui-express';
+import fs from 'fs';
 
 const app = express();
 app.use(cors());
 const PORT = process.env.PORT || 3333;
 
-const io = new Server(); //documentarion - const io = new Server(server);
+const swaggerFile = JSON.parse(fs.readFileSync('./swagger-output.json', 'utf-8'));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.get('/', (req, res) => {
+  res.redirect('/api-docs');
+});
+
+//documentação - const io = new Server(server);
+const io = new Server();
 
 //compartilha session com o socket
 io.use(sharedsession(sessionMiddleware, {
@@ -43,7 +53,6 @@ io.on('connection', (socket) => {
   })
 });
 
-
 dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -61,10 +70,11 @@ const main = async () => {
     console.log('Connected to MongoDB 🎉');
 
     app.use('/users', userRoutes);
-    app.use('/message', userRoutes);
+    app.use('/message', messageRoutes);
 
     app.listen(PORT, () => {
       console.log(`Server running at http://localhost:${PORT} 🚀`);
+      console.log(`Swagger documentation available at http://localhost:${PORT}/api-docs`);
     });
   } catch (err) {
     console.error('MongoDB connection error:', err);

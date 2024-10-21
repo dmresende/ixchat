@@ -5,8 +5,8 @@ import authMiddleware from '../middleware/authMiddleware.js';
 const router = express.Router();
 
 router.post('/', authMiddleware, sendMessage);
-router.post('/between', authMiddleware, getMessagesBetweenUsers);
-router.get('/', authMiddleware, markMessageAsRead);
-router.delete('/:id', authMiddleware, deleteMessage);
+router.get('/between/:userId', authMiddleware, getMessagesBetweenUsers);
+router.put('/:messageId/read', authMiddleware, markMessageAsRead);
+router.delete('/:messageId', authMiddleware, deleteMessage);
 
 export default router;

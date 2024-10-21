@@ -27,9 +27,9 @@ export const login = async (req, res) => {
 
 export const getAllUsers = async (_req, res) => {
   try {
-    const users = await User.find({}, 'name username photo').lean(); // Seleciona os campos desejados e transforma em objeto simples
+    const users = await User.find({}, 'name username photo').lean();
     const formattedUsers = users.map(user => ({
-      id: user._id, // Renomeia _id para id
+      id: user._id,
       name: user.name,
       username: user.username,
       photo: user.photo

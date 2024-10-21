@@ -19,6 +19,7 @@ const Chat = () => {
   const [visibleUsersCount, setVisibleUsersCount] = useState(9); // Número inicial de usuários visíveis
   const router = useRouter();
 
+  console.log('users: ', users)
 
   const handleLogout = () => {
     logout();
@@ -83,29 +84,27 @@ const Chat = () => {
         {/* Corpo principal */}
         <div className="grid grid-cols-[250px_1fr] h-full">
 
+
           {/* Barra lateral de conversas */}
           <div className="bg-gray-100 p-4 border-r">
-            {users?.length > 0 && users.slice(0, visibleUsersCount).map((user) => (
+            {users?.length > 0 && users.map((user) => (
               <div key={user.id} className="mb-4">
                 <div className="flex items-center p-2 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100">
                   <div className="w-12 h-12 rounded-full bg-yellow-500 mr-3"></div>
                   <div>
                     <h2 className="font-semibold text-gray-800">{user.name}</h2>
-                    <p className="text-sm text-gray-500">Você: Sim e você?</p>
                   </div>
                 </div>
               </div>
             ))}
-            {users.length > visibleUsersCount && ( // Verifica se há mais usuários para mostrar
-              <button
-                onClick={loadMoreUsers}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                Carregar mais
-              </button>
-            )}
-
-
+            {/* {users.length > visibleUsersCount && ( // Verifica se há mais usuários para mostrar
+              // <button
+              //   onClick={loadMoreUsers}
+              //   className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              // >
+              //   Carregar mais
+              // </button>
+            )} */}
           </div>
 
           {/* Área do chat */}

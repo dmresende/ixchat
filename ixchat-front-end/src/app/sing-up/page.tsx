@@ -1,8 +1,7 @@
-"use client"; // Certifique-se de que o componente está no lado do cliente
+"use client";
 
 import { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation'; // Importação correta para o useRouter na versão 13+
-// import { useAuth } from '@/hooks/useAlth';
+import { useRouter } from 'next/navigation';
 import { api } from '@/utils/api';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
@@ -12,17 +11,17 @@ const SignUp = () => {
   const [name, setName] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+
   const generateRandomNumber = () => {
     return Math.floor(Math.random() * 10000);
   }
-  // const { login } = useAuth();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       const photo = 'https://i.pravatar.cc/300?u=a' + generateRandomNumber();
-      // Envie os dados para a API
+
       const res = await api.post("/users/", { name, username, password, photo });
 
       if (res.status === 200 || res.status === 201 || res.status === 204) {
@@ -41,7 +40,6 @@ const SignUp = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-800 via-purple-700 to-pink-700">
       <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full">
-
 
         <h1 className="text-slate-700 text-2xl font-semibold mb-6">Sign Up</h1>
         <form className="flex flex-col w-full max-w-md space-y-4" onSubmit={handleSubmit}>
